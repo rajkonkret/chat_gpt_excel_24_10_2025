@@ -81,3 +81,70 @@ https://chatgpt.com/share/e/68fb3a19-81c0-8013-b2bf-594e1e9a4dbe
   );
 ""
 )
+----------
+Sub OczyscDatyIDodajKolumne()
+    Dim ws As Worksheet
+    Set ws = ActiveSheet
+
+    Dim lastRow As Long
+    lastRow = ws.Cells(ws.Rows.Count, "E").End(xlUp).Row
+
+    Dim lastCol As Long
+    lastCol = ws.Cells(1, ws.Columns.Count).End(xlToLeft).Column
+    Dim outputCol As Long
+    outputCol = lastCol + 1
+
+    ' Dodaj nagłówek
+    ws.Cells(1, outputCol).Value = "Data (mm/dd/yyyy)"
+
+    Dim i As Long
+    For i = 2 To lastRow
+        Dim rawDate As Variant
+        rawDate = ws.Cells(i, 5).Value  ' Kolumna E = 5
+
+        If IsDate(rawDate) Then
+            ws.Cells(i, outputCol).Value = Format(CDate(rawDate), "mm/dd/yyyy")
+        Else
+            ws.Cells(i, outputCol).Value = "Błąd daty"
+        End If
+    Next i
+
+    MsgBox "Daty zostały przekształcone i dodane do kolumny " & ws.Cells(1, outputCol).Address(False, False), vbInformation
+End Sub
+----------- poprawiona data-------
+Sub OczyscDatyIDodajKolumne()
+    Dim ws As Worksheet
+    Set ws = ActiveSheet
+
+    Dim lastRow As Long
+    lastRow = ws.Cells(ws.Rows.Count, "E").End(xlUp).Row
+
+    Dim lastCol As Long
+    lastCol = ws.Cells(1, ws.Columns.Count).End(xlToLeft).Column
+    Dim outputCol As Long
+    outputCol = lastCol + 1
+
+    ' Nagłówek
+    ws.Cells(1, outputCol).Value = "Data (dd/mm/yyyy)"
+
+    ' KLUCZ: wymuszenie ukośników jako literałów
+    ws.Columns(outputCol).NumberFormat = "dd\/mm\/yyyy"
+
+    Dim i As Long
+    For i = 2 To lastRow
+        Dim rawDate As Variant
+        rawDate = ws.Cells(i, 5).Value  ' Kolumna E
+
+        If IsDate(rawDate) Then
+            ws.Cells(i, outputCol).Value = CDate(rawDate) ' przechowuj jako datę
+        Else
+            ws.Cells(i, outputCol).Value = "Błąd daty"
+        End If
+    Next i
+
+    MsgBox "Daty zostały przekształcone i dodane do kolumny " & ws.Cells(1, outputCol).Address(False, False), vbInformation
+End Sub
+-----------
+
+chat - diagramy csv: https://chatgpt.com/g/g-68fb6c3047fc8191a1cd35db3ce12489-asystent-do-tworzenia-diagramow
+------
