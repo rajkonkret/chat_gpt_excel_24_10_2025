@@ -1,0 +1,83 @@
+https://chatgpt.com/share/e/68fb3a19-81c0-8013-b2bf-594e1e9a4dbe
+
+=SUMA(G2:G50)
+=INDEKS(D:D; PODAJ.POZYCJĘ(MAX(G:G); G:G; 0))
+
+=JEŻELI.BŁĄD(
+  INDEKS(
+    USUŃ.ZBĘDNE.ODSTĘPY(PODSTAW($E$2:$E$100;ZNAK(160);" "));
+    PODAJ.POZYCJĘ(
+      0;
+      LICZ.JEŻELI($J$1:J1;USUŃ.ZBĘDNE.ODSTĘPY(PODSTAW($E$2:$E$100;ZNAK(160);" ")));
+      0
+    )
+  );
+  ""
+)
+----------
+=INDEKS($D$2:$D$100;
+  PODAJ.POZYCJĘ(
+    MAX(
+      JEŻELI(
+        USUŃ.ZBĘDNE.ODSTĘPY(PODSTAW($E$2:$E$100;ZNAK(160);" "))=J2;
+        JEŻELI.BŁĄD(
+          WARTOŚĆ(PODSTAW(PODSTAW(PODSTAW(PODSTAW($G$2:$G$100;"$";"");" ";"");ZNAK(160);"");",";""));
+          0
+        )
+      )
+    );
+    JEŻELI(
+      USUŃ.ZBĘDNE.ODSTĘPY(PODSTAW($E$2:$E$100;ZNAK(160);" "))=J2;
+      JEŻELI.BŁĄD(
+        WARTOŚĆ(PODSTAW(PODSTAW(PODSTAW(PODSTAW($G$2:$G$100;"$";"");" ";"");ZNAK(160);"");",";""));
+        0
+      )
+    );
+    0
+  )
+)
+----=JEŻELI.BŁĄD(
+  INDEKS($D$6:$D$100;
+    AGREGUJ(
+      15; 6;
+      (WIERSZ($D$6:$D$100)-WIERSZ($D$6)+1) /
+      (
+        (
+          SUMA.WARUNKÓW(
+            $G$6:$G$100;
+            $D$6:$D$100;$D$6:$D$100;
+            $E$6:$E$100;
+            INDEKS($E$6:$E$100;
+              AGREGUJ(
+                15;6;
+                (WIERSZ($E$6:$E$100)-WIERSZ($E$6)+1) /
+                (PODAJ.POZYCJĘ($E$6:$E$100;$E$6:$E$100;0)=WIERSZ($E$6:$E$100)-WIERSZ($E$6)+1);
+                WIERSZ(A1)
+              )
+            )
+          )
+          =
+          MAX(
+            SUMA.WARUNKÓW(
+              $G$6:$G$100;
+              $D$6:$D$100;$D$6:$D$100;
+              $E$6:$E$100;
+              INDEKS($E$6:$E$100;
+                AGREGUJ(
+                  15;6;
+                  (WIERSZ($E$6:$E$100)-WIERSZ($E$6)+1) /
+                  (PODAJ.POZYCJĘ($E$6:$E$100;$E$6:$E$100;0)=WIERSZ($E$6:$E$100)-WIERSZ($E$6)+1);
+                  WIERSZ(A1)
+                )
+              )
+            )
+          )
+        )
+        *
+        (PODAJ.POZYCJĘ($D$6:$D$100;$D$6:$D$100;0)=WIERSZ($D$6:$D$100)-WIERSZ($D$6)+1)
+      );
+      1
+    )
+  );
+""
+)
